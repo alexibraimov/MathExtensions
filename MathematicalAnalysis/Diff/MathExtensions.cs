@@ -62,6 +62,13 @@ namespace Diff
                       Expression.Multiply(e.Right, e.Right)
                     );
             });
+            derivativesFuncs.Add(ExpressionType.Call, expression =>
+            {
+                var e = (MethodCallExpression)expression;
+                if (funcsnNamesAndDiffMethods.ContainsKey(e.Method.Name))
+                    return funcsnNamesAndDiffMethods[e.Method.Name](e);
+                return null;
+            });
         }
 
         private static Expression DiffSin(MethodCallExpression e)
