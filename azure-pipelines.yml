@@ -19,10 +19,11 @@ steps:
     restoreSolution: '$(solution)'
 
 - task: VSTest@2
-  displayName: 'Run GameTests'
+  displayName: 'Run unit tests'
   inputs:
-          testSelector: 'testAssemblies'
-          testAssemblyVer2: 'TestDiff.dll'
-          searchFolder: '$(System.DefaultWorkingDirectory)\MathematicalAnalysis\TestDiff\bin\Release'
-          runOnlyImpactedTests: false
-          runInParallel: false
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\*test*.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
