@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>MathematicalAnalysis</id>
+    <version>1.0.0</version>
+    <authors>IbraimovAlexander</authors>
+    <owners>IbraimovAlexander</owners>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/AlexanderIbraimov/MathExtensions/</projectUrl>
+    <description>Extensions over Math. Allows differentiation of functions</description>
+    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <copyright>Copyright 2021</copyright>
+    <tags>Math Diff Maths Derivative</tags>
+  </metadata>
+</package>
