@@ -141,7 +141,19 @@ namespace Diff
 
         private static Expression DiffPow(MethodCallExpression e)
         {
-            throw new NotImplementedException();
+            if (e.Arguments[0] is ParameterExpression && e.Arguments[1] is ConstantExpression)
+                return Expression.Multiply(Expression.Multiply(e.Arguments[1], Expression.Call(null, typeof(Math).GetMethod(nameof(Math.Pow)), e.Arguments[0],Expression.Add(e.Arguments[1], Expression.Constant(-1.0)))), derivativesFuncs[e.Arguments[0].NodeType](e.Arguments[0]));
+            else if (e.Arguments[0] is ConstantExpression && e.Arguments[1] is ParameterExpression)
+            {
+                var internalFunc = derivativesFuncs[e.Arguments[1].NodeType](e.Arguments[1]);
+                var externalFunc = Expression.Multiply(e, Expression.Call(null, typeof(Math).GetMethod(nameof(Math.Log), new[] { typeof(double) }), e.Arguments[0]));
+                return Expression.Multiply(internalFunc, externalFunc);
+            }
+            else
+            {
+                var result = Expression.Call(null, typeof(Math).GetMethod(nameof(Math.Exp)), Expression.Multiply(e.Arguments[1], Expression.Call(null, typeof(Math).GetMethod(nameof(Math.Log), new[] { typeof(double) }), e.Arguments[0])));
+                return derivativesFuncs[result.NodeType](result);
+            }
         }
     }
 }
