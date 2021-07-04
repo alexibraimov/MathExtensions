@@ -80,6 +80,12 @@ namespace Diff
                        derivativesFuncs[e.Arguments[0].NodeType](e.Arguments[0]));
         }
 
+        private static Expression DiffTan(MethodCallExpression e)
+        {
+            var cos = Expression.Call(null, typeof(Math).GetMethod(nameof(Math.Cos)), e.Arguments[0]);
+            return Expression.Divide(derivativesFuncs[e.Arguments[0].NodeType](e.Arguments[0]), Expression.Multiply(cos, cos));
+        }
+
         private static Expression DiffCosh(MethodCallExpression e)
         {
             throw new NotImplementedException();
@@ -110,10 +116,6 @@ namespace Diff
             throw new NotImplementedException();
         }
 
-        private static Expression DiffTan(MethodCallExpression e)
-        {
-            throw new NotImplementedException();
-        }
 
         private static Expression DiffLog(MethodCallExpression e)
         {
