@@ -24,6 +24,7 @@ namespace Diff
             funcsnNamesAndDiffMethods = new Dictionary<string, Func<MethodCallExpression, Expression>>
             {
                 [nameof(Math.Sin)] = e => DiffSin(e),
+                [nameof(Math.Cos)] = e => DifCos(e),
             };
 
             derivativesFuncs = new Dictionary<ExpressionType, Func<Expression, Expression>>();
@@ -59,6 +60,14 @@ namespace Diff
                         Expression.Call(null, typeof(Math).GetMethod(nameof(Math.Cos)), e.Arguments[0]),
                         derivativesFuncs[e.Arguments[0].NodeType](e.Arguments[0])
                         );
+        }
+
+        static Expression DifCos(MethodCallExpression e)
+        {
+            return Expression.Multiply(
+                       Expression.Multiply(Expression.Call(null, typeof(Math).GetMethod(nameof(Math.Sin)), e.Arguments[0]),
+                       Expression.Constant(-1.0)),
+                       derivativesFuncs[e.Arguments[0].NodeType](e.Arguments[0]));
         }
     }
 }
