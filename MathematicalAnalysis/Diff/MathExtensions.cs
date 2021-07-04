@@ -108,7 +108,10 @@ namespace Diff
 
         private static Expression DiffAtan(MethodCallExpression e)
         {
-            throw new NotImplementedException();
+            return Expression.Multiply(
+              Expression.Divide(Expression.Constant(1.0), Expression.Add(Expression.Constant(1.0), Expression.Multiply(e.Arguments[0], e.Arguments[0]))),
+              derivativesFuncs[e.Arguments[0].NodeType](e.Arguments[0])
+              );
         }
 
         private static Expression DiffAcos(MethodCallExpression e)
