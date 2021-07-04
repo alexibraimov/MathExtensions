@@ -1,0 +1,28 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@1
+  displayName: "Install NuGet tool"
+
+- task: NuGetCommand@2
+  displayName: "Restore NuGet packages"
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSTest@2
+  displayName: 'Run GameTests'
+  inputs:
+          testSelector: 'testAssemblies'
+          testAssemblyVer2: 'TestDiff.dll'
+          searchFolder: '$(System.DefaultWorkingDirectory)\MathematicalAnalysis\TestDiff\bin\Release'
+          runOnlyImpactedTests: false
+          runInParallel: false
