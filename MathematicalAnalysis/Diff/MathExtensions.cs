@@ -88,14 +88,16 @@ namespace Diff
 
         private static Expression DiffCosh(MethodCallExpression e)
         {
-            throw new NotImplementedException();
+            return Expression.Multiply(
+                     Expression.Call(null, typeof(Math).GetMethod((nameof(Math.Sinh))), e.Arguments[0]),
+                     derivativesFuncs[e.Arguments[0].NodeType](e.Arguments[0]));
         }
 
         private static Expression DiffSinh(MethodCallExpression e)
         {
             return Expression.Multiply(
                      Expression.Call(null, typeof(Math).GetMethod(nameof(Math.Cosh)), e.Arguments[0]),
-                     differentiatedFuncs[e.Arguments[0].NodeType](e.Arguments[0]));
+                     derivativesFuncs[e.Arguments[0].NodeType](e.Arguments[0]));
         }
 
         private static Expression DiffTanh(MethodCallExpression e)
