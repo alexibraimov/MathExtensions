@@ -7,6 +7,7 @@ namespace Diff
     public static class MathExtensions
     {
         private static readonly Dictionary<ExpressionType, Func<Expression, Expression>> derivativesFuncs;
+        private static Dictionary<string, Func<MethodCallExpression, Expression>> funcsnNamesAndDiffMethods;
 
         /// <summary>
         /// Function derivative
@@ -20,6 +21,11 @@ namespace Diff
 
         static MathExtensions()
         {
+            funcsnNamesAndDiffMethods = new Dictionary<string, Func<MethodCallExpression, Expression>>
+            {
+                [nameof(Math.Sin)] = e => DiffSin(e),
+            };
+
             derivativesFuncs = new Dictionary<ExpressionType, Func<Expression, Expression>>();
             derivativesFuncs.Add(ExpressionType.Constant, expression => Expression.Constant(0.0));
             derivativesFuncs.Add(ExpressionType.Parameter, expression => Expression.Constant(1.0));
@@ -45,6 +51,14 @@ namespace Diff
                       Expression.Multiply(e.Right, e.Right)
                     );
             });
+        }
+
+        static Expression DiffSin(MethodCallExpression e)
+        {
+            return Expression.Multiply(
+                        Expression.Call(null, typeof(Math).GetMethod(nameof(Math.Cos)), e.Arguments[0]),
+                        derivativesFuncs[e.Arguments[0].NodeType](e.Arguments[0])
+                        );
         }
     }
 }
