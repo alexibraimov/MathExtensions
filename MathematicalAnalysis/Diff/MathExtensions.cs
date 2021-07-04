@@ -123,9 +123,8 @@ namespace Diff
 
         private static Expression DiffAsin(MethodCallExpression e)
         {
-            throw new NotImplementedException();
+            return Expression.Multiply(Expression.Call(null, typeof(Math).GetMethod(nameof(Math.Pow)), Expression.Add(Expression.Constant(1.0), Expression.Multiply(Expression.Multiply(Expression.Constant(-1.0), e.Arguments[0]), e.Arguments[0])), Expression.Constant(-0.5)), derivativesFuncs[e.Arguments[0].NodeType](e.Arguments[0]));
         }
-
 
         private static Expression DiffLog(MethodCallExpression e)
         {
