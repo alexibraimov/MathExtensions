@@ -129,16 +129,14 @@ namespace Diff
         private static Expression DiffLog(MethodCallExpression e)
         {
             if (e.Arguments.Count == 2)
-                return Expression.Divide(derivativesFuncs[e.Arguments[0].NodeType](e.Arguments[0]),
-                   Expression.Multiply(e.Arguments[0], Expression.Call(null, typeof(Math).GetMethod(nameof(Math.Log), new[] { typeof(double) }), e.Arguments[1]))
-                   );
+                return Expression.Divide(derivativesFuncs[e.Arguments[0].NodeType](e.Arguments[0]), Expression.Multiply(e.Arguments[0], Expression.Call(null, typeof(Math).GetMethod(nameof(Math.Log), new[] { typeof(double) }), e.Arguments[1])));
             else
                 return Expression.Divide(derivativesFuncs[e.Arguments[0].NodeType](e.Arguments[0]), e.Arguments[0]);
         }
 
         private static Expression DiffExp(MethodCallExpression e)
         {
-            throw new NotImplementedException();
+            return Expression.Multiply(Expression.Call(null, typeof(Math).GetMethod(nameof(Math.Exp)), e.Arguments[0]), derivativesFuncs[e.Arguments[0].NodeType](e.Arguments[0]));
         }
 
         private static Expression DiffPow(MethodCallExpression e)
