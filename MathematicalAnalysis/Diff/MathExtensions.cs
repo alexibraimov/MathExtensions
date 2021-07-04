@@ -93,7 +93,9 @@ namespace Diff
 
         private static Expression DiffSinh(MethodCallExpression e)
         {
-            throw new NotImplementedException();
+            return Expression.Multiply(
+                     Expression.Call(null, typeof(Math).GetMethod(nameof(Math.Cosh)), e.Arguments[0]),
+                     differentiatedFuncs[e.Arguments[0].NodeType](e.Arguments[0]));
         }
 
         private static Expression DiffTanh(MethodCallExpression e)
