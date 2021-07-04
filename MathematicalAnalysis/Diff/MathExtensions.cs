@@ -102,7 +102,8 @@ namespace Diff
 
         private static Expression DiffTanh(MethodCallExpression e)
         {
-            throw new NotImplementedException();
+            var cosh = Expression.Call(null, typeof(Math).GetMethod(nameof(Math.Cosh)), e.Arguments[0]);
+            return Expression.Divide(derivativesFuncs[e.Arguments[0].NodeType](e.Arguments[0]), Expression.Multiply(cosh, cosh));
         }
 
         private static Expression DiffAtan(MethodCallExpression e)
